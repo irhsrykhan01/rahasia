@@ -32,6 +32,28 @@
         /* Utils */
         .hidden { display: none !important; }
         
+        /* ================= MENCURIGAKAN (INTRO SCREEN) ================= */
+        .intro-screen {
+            position: fixed;
+            inset: 0;
+            background: #121212;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 100000;
+            transition: opacity 0.8s ease;
+            text-align: center;
+            padding: 20px;
+        }
+        .intro-screen h2 {
+            font-size: 1.3rem;
+            font-weight: 400;
+            color: #ff9ad5;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
         /* ================= LOADING SCREEN ================= */
         .loading-screen {
             position: fixed;
@@ -70,6 +92,7 @@
             text-shadow: 0 0 15px rgba(255,255,255,.6);
             font-weight: 700;
         }
+        
         /* Staggered Line Animation */
         .animate-line {
             opacity: 0;
@@ -283,7 +306,6 @@
             to { transform: translateY(105vh) rotate(360deg); }
         }
 
-        /* Responsive Fixes */
         @media (max-width: 600px) {
             .card { padding: 20px; min-height: 350px; }
             .album-title { font-size: 2.2rem; }
@@ -300,12 +322,19 @@
         <source src="musik_kenangan.mp3" type="audio/mpeg">
     </audio>
 
-    <div class="loading-screen" id="loadingScreen">
+    <div class="intro-screen" id="introScreen">
+        <h2>🔒 Ada kejutan rahasia yang terkunci...</h2>
+        <button class="main-btn" style="margin-top: 0; background: #ff4da5; color: white;" onclick="mulaiKejutanUtama()">
+            Buka Kunci Kejutan 🔓
+        </button>
+    </div>
+
+    <div class="loading-screen hidden" id="loadingScreen">
         <div class="loader"></div>
         <h2>Menyiapkan Hadiah Untuk Bunda... 🎁</h2>
     </div>
 
-    <section class="hero" id="heroSection">
+    <section class="hero hidden" id="heroSection">
         <div class="hero-content">
             <h1 class="animate-line line-1">🎂 HAPPY BIRTHDAY</h1>
             <h1 class="animate-line line-2" style="color: #fff275;">BUNDAA ❤️</h1>
@@ -370,26 +399,42 @@
         let score = 0;
         let rainInterval;
 
-        // 1. Durasi Loading Screen Sengaja Dibuat Lama (3.5 Detik) 🤭
-        window.onload = () => {
-            setTimeout(() => {
-                const loaderScreen = document.getElementById("loadingScreen");
-                loaderScreen.style.opacity = "0";
-                setTimeout(() => loaderScreen.remove(), 1000);
-            }, 3500);
-        };
-
-        // Mulai Musik Pertama saat Tombol Buka Hadiah Di-klik
-        function startToGame() {
+        // Fungsi Pertama: Diklik pada layar hitam misterius
+        function mulaiKejutanUtama() {
+            // SIKAT! Mainkan musik pertama langsung di sini
             music1.volume = 1;
             music1.play().catch(() => {});
-            
+
+            // Hilangkan layar hitam
+            const intro = document.getElementById("introScreen");
+            intro.style.opacity = "0";
+            setTimeout(() => {
+                intro.remove();
+                // Munculkan loading screen
+                document.getElementById("loadingScreen").classList.remove("hidden");
+                
+                // Jeda Loading Screen dilamain dikiiit (5.5 detik) biar musik awal berkumandang mantap
+                setTimeout(() => {
+                    const loaderScreen = document.getElementById("loadingScreen");
+                    loaderScreen.style.opacity = "0";
+                    setTimeout(() => {
+                        loaderScreen.remove();
+                        // Tampilkan Hero Section utama
+                        document.getElementById("heroSection").classList.remove("hidden");
+                    }, 1000);
+                }, 5500);
+
+            }, 800);
+        }
+
+        // Masuk ke Game Tangkap Balon
+        function startToGame() {
             document.getElementById("heroSection").classList.add("hidden");
             document.getElementById("gameView").classList.remove("hidden");
             spawnBalloon();
         }
 
-        // 2. Game Tangkap Balon
+        // Sistem Spawning Balon
         function spawnBalloon() {
             if (score >= 5) return;
             
@@ -398,7 +443,6 @@
             balloon.className = "balloon";
             balloon.innerHTML = "🎈";
             
-            // Posisi Acak Aman
             balloon.style.left = Math.random() * 85 + "%";
             balloon.style.top = Math.random() * 65 + "%";
             
@@ -416,22 +460,22 @@
             area.appendChild(balloon);
         }
 
-        // Transisi setelah menang Game
+        // Transisi setelah menang Game Balon
         function winGame() {
             document.getElementById("gameView").classList.add("hidden");
             document.getElementById("albumTransition").classList.remove("hidden");
             
-            // Pemicu Transisi Musik Fade (Mengecil -> Ganti Lagu -> Membesar)
+            // Pemicu Transisi Musik Fade (Smooth Crossfade)
             fadeMusicTransition();
 
-            // Tampilkan Layar Transisi selama 4 detik
+            // Tampilkan Layar Transisi "Selamat!" selama 4 detik sebelum album
             setTimeout(() => {
                 document.getElementById("albumTransition").classList.add("hidden");
                 startAlbumSection();
             }, 4000);
         }
 
-        // Fungsi Transisi Suara Lebih Halus (Smooth Crossfade)
+        // Fungsi Transisi Suara Lebih Halus
         function fadeMusicTransition() {
             let step = 0;
             music2.volume = 0;
@@ -446,18 +490,18 @@
                     clearInterval(fadeInterval);
                     music1.pause();
                 }
-            }, 300); // Total durasi transisi 3 detik
+            }, 300); // Total durasi transisi silang musik ~3 detik
         }
 
-        // 3. Masuk Sesi Album Kenangan
+        // Masuk Sesi Album Kenangan
         function startAlbumSection() {
-            document.body.style.overflowY = "auto"; // Aktifkan scroll body
+            document.body.style.overflowY = "auto"; // Aktifkan scroll
             document.getElementById("albumSection").classList.remove("hidden");
             
-            // Memulai efek hujan sakura tipis-tipis 🌸
+            // Memulai efek hujan sakura tipis-tipis di album 🌸
             startParticleRain(["🌸"], 120, 20);
 
-            // Munculkan teks "geser kebawah" tepat 2 detik setelah gambar pertama tampil
+            // Munculkan petunjuk "geser kebawah" tepat 2 detik setelah gambar pertama tampil
             setTimeout(() => {
                 const hint = document.getElementById("scrollHint");
                 if(hint) hint.style.opacity = "1";
@@ -466,16 +510,13 @@
             setupScrollAnimations();
         }
 
-        // Pengaturan Animasi Scroll Menggunakan Intersection Observer (Smooth & No Lag)
+        // Pengaturan Animasi Scroll Menggunakan Intersection Observer (Anti-Lag)
         function setupScrollAnimations() {
             const cards = document.querySelectorAll('.photo-card');
-            
-            // Dekorasi Emoji Ulang Tahun di Samping Kosong (🎂🎉🎁🕯)
             const emojis = ["🎂", "🎉", "🎁", "🕯", "✨", "💖"];
-            const galleryContainer = document.querySelector('.gallery-container');
 
             cards.forEach((card, index) => {
-                // Spawn emoji di sebelah kiri/kanan card secara acak
+                // Spawn emoji hiasan di samping kiri/kanan yang kosong
                 const sideEmoji = document.createElement('div');
                 sideEmoji.className = 'side-emoji';
                 sideEmoji.innerHTML = emojis[index % emojis.length];
@@ -487,20 +528,20 @@
                 }
                 document.getElementById("albumSection").appendChild(sideEmoji);
 
-                // Setup Observer
+                // Setup Observer untuk deteksi scroll
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
                             entry.target.classList.add('visible');
                             sideEmoji.classList.add('visible');
                             
-                            // Menghilangkan petunjuk scroll jika sudah scroll jauh
+                            // Sembunyikan hint geser jika user sudah mulai scroll ke bawah
                             if(index > 0) {
                                 const hint = document.getElementById("scrollHint");
                                 if(hint) hint.style.opacity = "0";
                             }
 
-                            // Jika mencapai foto terakhir (ke-10), munculkan tombol LANJUTKAN
+                            // Jika mencapai foto terakhir ke-10, munculkan tombol LANJUTKAN
                             if (index === cards.length - 1) {
                                 document.getElementById("btnToLetter").style.display = "inline-block";
                             }
@@ -512,23 +553,21 @@
             });
         }
 
-        // 4. Masuk Sesi Surat Ulang Tahun
+        // Masuk Sesi Surat Ulang Tahun
         function goToLetter() {
-            clearInterval(rainInterval); // Reset hujan sakura tipis
+            clearInterval(rainInterval); // Stop sakura tipis
             document.getElementById("albumSection").classList.add("hidden");
-            document.body.style.overflow = "hidden"; // Kunci scroll kembali
+            document.body.style.overflow = "hidden"; // Kunci scroll lagi
             
             document.getElementById("letterView").classList.remove("hidden");
             
-            // Hujan partikel lebih ramai untuk sesi Surat (Sakura + Konfeti) 🎉🌸
+            // Efek hujan partikel lebih ramai (Sakura + Konfeti + Hati) 🎉🌸💖
             startParticleRain(["🌸", "🎉", "🎊", "✨", "💖"], 60, 45);
             
-            // Mulai efek mengetik teks surat
             typeLetter();
         }
 
         function typeLetter() {
-            // Silakan edit teks pesan di bawah ini sesuai keinginanmu
             const pesanSurat = `Selamat ulang tahun, Bunda tercinta. 🎂\n\nTerima kasih atas segala cinta, kebaikan, dan kesabaran yang selalu Bunda berikan setiap hari tanpa lelah. Terima kasih sudah selalu menjaga, mendukung, dan mendoakanku dalam setiap langkah.\n\nTetap semangat ya, Nda! 🌸 Semoga di usia yang baru ini, Bunda selalu diberikan kesehatan yang prima, kebahagiaan yang melimpah, panjang umur, serta segala berkah dari-Nya.\n\nAku sayang banget sama Bunda. ❤️\n\n- Dari anakmu`;
 
             const target = document.getElementById("typedText");
@@ -541,15 +580,14 @@
                 
                 if (i >= pesanSurat.length) {
                     clearInterval(typing);
-                    // Tampilkan ending ucapan terima kasih setelah ketikan selesai
                     setTimeout(() => {
                         document.getElementById("endingContent").classList.remove("hidden");
                     }, 1000);
                 }
-            }, 45); // Kecepatan efek ketik halus
+            }, 45); // Efek ketikan halus berjalan
         }
 
-        // Generator Efek Hujan Partikel (Sakura / Konfeti)
+        // Generator Efek Hujan Partikel
         function startParticleRain(emojisArray, intervalTime, maxParticles) {
             let activeParticles = 0;
             rainInterval = setInterval(() => {
