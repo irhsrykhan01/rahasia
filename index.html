@@ -621,498 +621,221 @@ onclick="location.reload()">
 </div>
 
 <script>
-
 const photos = [
-
-"img1.jpg",
-"img2.jpg",
-"img3.jpg",
-"img4.jpg",
-"img5.jpg",
-"img6.jpg",
-"img7.jpg",
-"img8.jpg",
-"img9.jpg",
-"img10.jpg"
-
+"img1.jpg","img2.jpg","img3.jpg","img4.jpg","img5.jpg",
+"img6.jpg","img7.jpg","img8.jpg","img9.jpg","img10.jpg"
 ];
 
 let currentPhoto = 0;
 let score = 0;
+let balloonActive = false;
 
-const gameMusic =
-document.getElementById("gameMusic");
+const gameMusic = document.getElementById("gameMusic");
+const memoryMusic = document.getElementById("memoryMusic");
 
-const memoryMusic =
-document.getElementById("memoryMusic");
+/* ================= SAFE START AUDIO ================= */
+function safePlay(audio){
+  audio.volume = 1;
+  audio.play().catch(()=>{});
+}
 
-window.onload = ()=>{
-
-setTimeout(()=>{
-
-document.getElementById(
-"loadingScreen"
-).style.display="none";
-
-},2000);
-
-gameMusic.volume=1;
-
-gameMusic.play()
-.catch(()=>{});
-
+/* ================= INIT ================= */
+window.onload = () => {
+  setTimeout(() => {
+    document.getElementById("loadingScreen").style.display = "none";
+  }, 1500);
 };
 
+/* ================= OPEN MODAL ================= */
 function openGift(){
+  document.getElementById("giftModal").classList.add("show");
 
-document
-.getElementById("giftModal")
-.classList.add("show");
+  safePlay(gameMusic);
 
-spawnBalloon();
-
+  if(!balloonActive){
+    balloonActive = true;
+    spawnBalloon();
+  }
 }
 
+/* ================= CLOSE ================= */
 function closeGift(){
-
-document
-.getElementById("giftModal")
-.classList.remove("show");
-
+  document.getElementById("giftModal").classList.remove("show");
 }
 
+/* ================= BALLOON (ANTI LAG VERSION) ================= */
 function spawnBalloon(){
+  const area = document.getElementById("balloonArea");
 
-const area =
-document.getElementById(
-"balloonArea"
-);
+  if(!area) return;
 
-const balloon =
-document.createElement("div");
+  const balloon = document.createElement("div");
+  balloon.className = "balloon";
+  balloon.innerHTML = "🎈";
 
-balloon.className =
-"balloon";
+  balloon.style.left = Math.random()*85 + "%";
+  balloon.style.top = Math.random()*75 + "%";
 
-balloon.innerHTML =
-"🎈";
+  balloon.onclick = () => {
+    balloon.remove();
+    score++;
 
-balloon.style.left =
-Math.random()*80+"%";
+    document.getElementById("score").innerText = score + " / 5";
 
-balloon.style.top =
-Math.random()*70+"%";
+    if(score >= 5){
+      winGame();
+    } else {
+      setTimeout(spawnBalloon, 400);
+    }
+  };
 
-balloon.onclick = ()=>{
+  area.appendChild(balloon);
 
-balloon.remove();
-
-score++;
-
-document.getElementById(
-"score"
-).innerHTML =
-score + " / 5";
-
-if(score >= 5){
-
-winGame();
-
-}else{
-
-spawnBalloon();
-
+  /* AUTO CLEAN (anti spam memory) */
+  setTimeout(() => {
+    if(balloon.parentNode){
+      balloon.remove();
+    }
+  }, 6000);
 }
 
-};
-
-area.appendChild(balloon);
-
-}
-
+/* ================= WIN ================= */
 function winGame(){
+  document.getElementById("gameView").style.display = "none";
+  document.getElementById("memoryLoading").style.display = "flex";
 
-document
-.getElementById(
-"gameView"
-).style.display =
-"none";
+  fadeMusic();
 
-document
-.getElementById(
-"memoryLoading"
-).style.display =
-"flex";
-
-fadeMusic();
-
-setTimeout(()=>{
-
-document
-.getElementById(
-"memoryLoading"
-).style.display =
-"none";
-
-document
-.getElementById(
-"slideView"
-).style.display =
-"flex";
-
-showPhoto();
-
-},4000);
-
+  setTimeout(() => {
+    document.getElementById("memoryLoading").style.display = "none";
+    document.getElementById("slideView").style.display = "flex";
+    showPhoto();
+  }, 2500);
 }
 
+/* ================= MUSIC FADE (LIGHT VERSION) ================= */
 function fadeMusic(){
+  safePlay(memoryMusic);
 
-memoryMusic.volume=0;
+  let step = 0;
 
-memoryMusic.play()
-.catch(()=>{});
+  const interval = setInterval(() => {
+    step++;
 
-let step=0;
+    gameMusic.volume = Math.max(0, 1 - step/8);
+    memoryMusic.volume = Math.min(1, step/8);
 
-let fadeInterval =
-setInterval(()=>{
-
-step++;
-
-gameMusic.volume =
-Math.max(
-0,
-1-step/10
-);
-
-memoryMusic.volume =
-Math.min(
-1,
-step/10
-);
-
-if(step>=10){
-
-clearInterval(
-fadeInterval
-);
-
-gameMusic.pause();
-
+    if(step >= 8){
+      clearInterval(interval);
+      gameMusic.pause();
+    }
+  }, 250);
 }
 
-},300);
-
-}
-
+/* ================= SLIDE ================= */
 function showPhoto(){
+  const img = document.getElementById("slideImage");
 
-document
-.getElementById(
-"slideImage"
-).src =
-photos[currentPhoto];
+  img.src = photos[currentPhoto];
 
-document
-.getElementById(
-"counter"
-).innerHTML =
-(currentPhoto+1)
-+
-" / "
-+
-photos.length;
+  document.getElementById("counter").innerText =
+  (currentPhoto+1) + " / " + photos.length;
 
-document
-.getElementById(
-"prevBtn"
-).disabled =
-(currentPhoto===0);
+  document.getElementById("prevBtn").disabled = (currentPhoto === 0);
 
-if(
-currentPhoto
-===
-photos.length-1
-){
-
-document
-.getElementById(
-"nextBtn"
-).innerHTML =
-"💌 Buka Surat";
-
-}else{
-
-document
-.getElementById(
-"nextBtn"
-).innerHTML =
-"➡️";
-
+  document.getElementById("nextBtn").innerText =
+  (currentPhoto === photos.length-1) ? "💌 Surat" : "➡️";
 }
 
-}
 function nextSlide(){
-
-if(
-currentPhoto <
-photos.length-1
-){
-
-currentPhoto++;
-
-showPhoto();
-
-}else{
-
-showLetter();
-
-}
-
+  if(currentPhoto < photos.length-1){
+    currentPhoto++;
+    showPhoto();
+  } else {
+    showLetter();
+  }
 }
 
 function prevSlide(){
-
-if(currentPhoto>0){
-
-currentPhoto--;
-
-showPhoto();
-
+  if(currentPhoto > 0){
+    currentPhoto--;
+    showPhoto();
+  }
 }
 
-}
-
+/* ================= LETTER ================= */
 function showLetter(){
+  document.getElementById("slideView").style.display = "none";
+  document.getElementById("letterView").style.display = "flex";
 
-document
-.getElementById(
-"slideView"
-).style.display =
-"none";
-
-document
-.getElementById(
-"letterView"
-).style.display =
-"flex";
-
-launchConfetti();
-
-launchSakura();
-
-typeLetter();
-
+  typeLetter();
 }
 
+/* ================= TYPE (LIGHT VERSION) ================= */
 function typeLetter(){
+  const text = `Selamat ulang tahun Bunda ❤️
+Terima kasih atas semuanya...
+Sehat selalu yaa 🌸`;
 
-const text =
+  const target = document.getElementById("typedText");
+  target.innerHTML = "";
 
-`Selamat ulang tahun, Bunda. 🎂
+  let i = 0;
 
-Terima kasih atas semua yang selalu Bunda berikan setiap hari.
+  const typing = setInterval(() => {
+    target.innerHTML += text[i];
+    i++;
 
-Terima kasih sudah selalu menjaga, mendukung, dan mendoakanku.
+    if(i >= text.length){
+      clearInterval(typing);
 
-Tetap semangat ya nda. 🌸
-
-Semoga Bunda selalu diberikan kesehatan, kebahagiaan, dan umur yang penuh berkah.
-
-❤️ Dari anakmu`;
-
-const target =
-document.getElementById(
-"typedText"
-);
-
-target.innerHTML="";
-
-let i=0;
-
-const typing =
-setInterval(()=>{
-
-target.innerHTML +=
-text.charAt(i);
-
-i++;
-
-if(i>=text.length){
-
-clearInterval(
-typing
-);
-
-setTimeout(()=>{
-
-document
-.getElementById(
-"letterView"
-).style.display =
-"none";
-
-document
-.getElementById(
-"endingView"
-).style.display =
-"flex";
-
-},4000);
-
+      setTimeout(() => {
+        document.getElementById("letterView").style.display = "none";
+        document.getElementById("endingView").style.display = "flex";
+      }, 1500);
+    }
+  }, 40);
 }
 
-},35);
-
-}
-
+/* ================= LIGHT CONFETTI ================= */
 function launchConfetti(){
+  for(let i=0;i<15;i++){
+    const c = document.createElement("div");
+    c.className = "confetti";
+    c.innerHTML = ["🎉","✨","💖"][Math.floor(Math.random()*3)];
+    c.style.left = Math.random()*100 + "vw";
+    c.style.animationDuration = (2 + Math.random()*2) + "s";
 
-for(
-let i=0;
-i<40;
-i++
-){
+    document.body.appendChild(c);
 
-const confetti =
-document.createElement(
-"div"
-);
-
-confetti.className =
-"confetti";
-
-const emojis =
-
-[
-"🎉",
-"🎊",
-"✨",
-"💖"
-];
-
-confetti.innerHTML =
-
-emojis[
-Math.floor(
-Math.random()
-*
-emojis.length
-)
-];
-
-confetti.style.left =
-Math.random()*100
-+
-"vw";
-
-confetti.style.fontSize =
-(
-18+
-Math.random()*12
-)
-+
-"px";
-
-confetti.style.animationDuration =
-(
-3+
-Math.random()*2
-)
-+
-"s";
-
-document.body.appendChild(
-confetti
-);
-
-setTimeout(()=>{
-
-confetti.remove();
-
-},5000);
-
+    setTimeout(()=>c.remove(), 4000);
+  }
 }
 
-}
-
+/* ================= LIGHT SAKURA ================= */
 function launchSakura(){
+  for(let i=0;i<10;i++){
+    setTimeout(() => {
+      const f = document.createElement("div");
+      f.className = "sakura";
+      f.innerHTML = "🌸";
+      f.style.left = Math.random()*100 + "vw";
+      f.style.animationDuration = (4 + Math.random()*2) + "s";
 
-for(
-let i=0;
-i<30;
-i++
-){
+      document.body.appendChild(f);
 
-setTimeout(()=>{
-
-const flower =
-document.createElement(
-"div"
-);
-
-flower.className =
-"sakura";
-
-flower.innerHTML =
-"🌸";
-
-flower.style.left =
-Math.random()*100
-+
-"vw";
-
-flower.style.fontSize =
-(
-15+
-Math.random()*18
-)
-+
-"px";
-
-flower.style.animationDuration =
-(
-5+
-Math.random()*4
-)
-+
-"s";
-
-document.body.appendChild(
-flower
-);
-
-setTimeout(()=>{
-
-flower.remove();
-
-},9000);
-
-},i*120);
-
+      setTimeout(()=>f.remove(), 6000);
+    }, i*150);
+  }
 }
 
-}
-
-/* ESC untuk tutup modal */
-
-document.addEventListener(
-"keydown",
-(e)=>{
-
-if(
-e.key==="Escape"
-){
-
-closeGift();
-
-}
-
-}
-);
-
-</script>
+/* ESC CLOSE */
+document.addEventListener("keydown",(e)=>{
+  if(e.key === "Escape"){
+    closeGift();
+  }
+});
+    </script>
 
 </body>
 </html>
