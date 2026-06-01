@@ -1,841 +1,580 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>HAPPY BIRTHDAY BUNDAA 🎂</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
-
-html,body{
-width:100%;
-height:100%;
-overflow:hidden;
-}
-
-body{
-background:linear-gradient(-45deg,#ff9ad5,#d6a2ff,#ffb6dd,#b99dff);
-background-size:400% 400%;
-animation:bgMove 15s ease infinite;
-color:white;
-}
-
-@keyframes bgMove{
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
-}
-
-/* ================= LOADING ================= */
-
-.loading-screen{
-position:fixed;
-inset:0;
-background:linear-gradient(135deg,#ff89d6,#b87fff);
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-z-index:99999;
-}
-
-.loader{
-width:70px;
-height:70px;
-border:7px solid rgba(255,255,255,.3);
-border-top:7px solid white;
-border-radius:50%;
-animation:spin 1s linear infinite;
-}
-
-@keyframes spin{
-100%{
-transform:rotate(360deg);
-}
-}
-
-.loading-screen h2{
-margin-top:20px;
-font-size:1.2rem;
-}
-
-/* ================= HERO ================= */
-
-.hero{
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-padding:20px;
-text-align:center;
-}
-
-.hero-content{
-max-width:800px;
-}
-
-.hero h1{
-font-size:clamp(2rem,6vw,4.5rem);
-line-height:1.2;
-
-text-shadow:
-0 0 15px rgba(255,255,255,.9),
-0 0 30px rgba(255,255,255,.5);
-
-animation:fadeUp 1s ease;
-}
-
-.hero p{
-margin-top:20px;
-font-size:1.1rem;
-opacity:.95;
-}
-
-@keyframes fadeUp{
-from{
-opacity:0;
-transform:translateY(30px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
-
-.main-btn{
-margin-top:30px;
-padding:15px 35px;
-border:none;
-border-radius:999px;
-cursor:pointer;
-
-font-size:1rem;
-font-weight:700;
-
-background:white;
-color:#ff4da5;
-
-box-shadow:
-0 10px 25px rgba(0,0,0,.2);
-
-transition:.3s;
-}
-
-.main-btn:hover{
-transform:scale(1.05);
-}
-
-/* ================= MODAL ================= */
-
-.modal{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.55);
-
-display:none;
-justify-content:center;
-align-items:center;
-
-padding:20px;
-
-backdrop-filter:blur(8px);
-
-z-index:9999;
-}
-
-.modal.show{
-display:flex;
-}
-
-.card{
-width:min(92vw,760px);
-
-min-height:500px;
-
-background:rgba(255,255,255,.15);
-
-backdrop-filter:blur(15px);
-
-border-radius:30px;
-
-padding:25px;
-
-box-shadow:
-0 15px 40px rgba(0,0,0,.25);
-
-position:relative;
-
-overflow:hidden;
-}
-
-/* ================= CLOSE BUTTON ================= */
-
-.close-btn{
-position:absolute;
-right:15px;
-top:15px;
-
-width:45px;
-height:45px;
-
-border:none;
-border-radius:50%;
-
-cursor:pointer;
-
-background:rgba(255,255,255,.2);
-
-color:white;
-font-size:1.2rem;
-}
-
-/* ================= GAME ================= */
-
-.game-view{
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-text-align:center;
-
-height:100%;
-}
-
-.game-view h2{
-margin-bottom:10px;
-}
-
-#score{
-font-size:2rem;
-font-weight:bold;
-margin-bottom:20px;
-}
-
-#balloonArea{
-position:relative;
-
-width:100%;
-height:280px;
-
-overflow:hidden;
-}
-
-/* ================= BALLOON ================= */
-
-.balloon{
-position:absolute;
-
-font-size:55px;
-
-cursor:pointer;
-
-user-select:none;
-
-transition:.2s;
-}
-
-.balloon:hover{
-transform:scale(1.1);
-}
-
-/* ================= LOADING KENANGAN ================= */
-
-.memory-loading{
-display:none;
-
-height:100%;
-
-justify-content:center;
-align-items:center;
-flex-direction:column;
-
-text-align:center;
-}
-
-.memory-loading h2{
-margin-bottom:15px;
-}
-
-.memory-loader{
-width:60px;
-height:60px;
-
-border:6px solid rgba(255,255,255,.25);
-border-top:6px solid white;
-
-border-radius:50%;
-
-animation:spin 1s linear infinite;
-}
-
-/* ================= SLIDESHOW ================= */
-
-.slide-view{
-display:none;
-
-height:100%;
-
-flex-direction:column;
-justify-content:center;
-align-items:center;
-
-text-align:center;
-}
-
-.photo-frame{
-width:min(100%,520px);
-
-aspect-ratio:4/3;
-
-border-radius:25px;
-
-overflow:hidden;
-
-box-shadow:
-0 10px 30px rgba(0,0,0,.25);
-}
-
-.photo-frame img{
-width:100%;
-height:100%;
-object-fit:cover;
-}
-
-.counter{
-margin-top:15px;
-font-weight:600;
-}
-
-.controls{
-margin-top:20px;
-
-display:flex;
-gap:10px;
-}
-
-.nav-btn{
-padding:12px 20px;
-
-border:none;
-border-radius:999px;
-
-cursor:pointer;
-
-font-weight:bold;
-
-background:white;
-color:#d54fa5;
-}
-
-/* ================= LETTER ================= */
-
-.letter-view{
-display:none;
-
-height:100%;
-
-justify-content:center;
-align-items:center;
-flex-direction:column;
-
-text-align:center;
-}
-
-.letter-box{
-
-max-width:600px;
-
-line-height:2;
-
-padding:25px;
-
-background:rgba(255,255,255,.1);
-
-border-radius:25px;
-}
-
-/* ================= ENDING ================= */
-
-.ending-view{
-display:none;
-
-height:100%;
-
-justify-content:center;
-align-items:center;
-flex-direction:column;
-
-text-align:center;
-}
-
-.restart-btn{
-margin-top:20px;
-
-padding:14px 30px;
-
-border:none;
-border-radius:999px;
-
-cursor:pointer;
-
-font-weight:bold;
-
-background:white;
-color:#ff4da5;
-}
-
-/* ================= SAKURA ================= */
-
-.sakura{
-position:fixed;
-top:-20px;
-
-pointer-events:none;
-
-z-index:99999;
-
-animation:fall linear forwards;
-}
-
-@keyframes fall{
-to{
-transform:translateY(110vh) rotate(360deg);
-}
-}
-
-/* ================= CONFETTI ================= */
-
-.confetti{
-position:fixed;
-top:-20px;
-
-pointer-events:none;
-
-z-index:99999;
-
-animation:fall linear forwards;
-}
-
-/* ================= MOBILE ================= */
-
-@media(max-width:768px){
-
-.card{
-min-height:450px;
-}
-
-.photo-frame{
-aspect-ratio:1/1;
-}
-
-.hero p{
-font-size:1rem;
-}
-
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAPPY BIRTHDAY BUNDA 🎂</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(-45deg, #ff9ad5, #d6a2ff, #ffb6dd, #b99dff);
+            background-size: 400% 400%;
+            animation: bgMove 15s ease infinite;
+            color: white;
+            overflow: hidden;
+        }
+
+        @keyframes bgMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Utils */
+        .hidden { display: none !important; }
+        
+        /* ================= LOADING SCREEN ================= */
+        .loading-screen {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #ff89d6, #b87fff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 99999;
+            transition: opacity 1s ease;
+        }
+        .loader {
+            width: 70px;
+            height: 70px;
+            border: 7px solid rgba(255,255,255,.3);
+            border-top: 7px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .loading-screen h2 { margin-top: 20px; font-size: 1.2rem; font-weight: 400; }
+
+        /* ================= HERO SECTION ================= */
+        .hero {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+        }
+        .hero-content h1 {
+            font-size: clamp(2.2rem, 6vw, 4.5rem);
+            line-height: 1.3;
+            text-shadow: 0 0 15px rgba(255,255,255,.6);
+            font-weight: 700;
+        }
+        /* Staggered Line Animation */
+        .animate-line {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+        }
+        .line-1 { animation-delay: 0.5s; }
+        .line-2 { animation-delay: 1.5s; }
+        .line-3 { animation-delay: 2.5s; }
+        
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .main-btn {
+            margin-top: 35px;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 700;
+            background: white;
+            color: #ff4da5;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .main-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+        }
+
+        /* ================= CARD CONTAINER (GAME & SURAT) ================= */
+        .view-container {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            backdrop-filter: blur(8px);
+            background: rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
+        .card {
+            width: min(92vw, 650px);
+            min-height: 400px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Game Elements */
+        #balloonArea {
+            position: relative;
+            width: 100%;
+            height: 250px;
+            margin-top: 15px;
+            overflow: hidden;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+        }
+        .balloon {
+            position: absolute;
+            font-size: 50px;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.1s ease;
+            will-change: transform;
+        }
+        .balloon:hover { transform: scale(1.2); }
+        #score { font-size: 2rem; font-weight: 700; margin: 10px 0; }
+
+        /* Transition Screen */
+        .album-loading {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        /* ================= ALBUM KENANGAN (SCROLLABLE) ================= */
+        #albumSection {
+            width: 100%;
+            height: 100vh;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            padding: 60px 20px;
+            position: relative;
+        }
+        .album-title {
+            text-align: center;
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+        }
+        .gallery-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 80px;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto 100px auto;
+        }
+        /* Polaroid Style */
+        .photo-card {
+            background: white;
+            padding: 15px 15px 35px 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            border-radius: 4px;
+            width: min(100%, 360px);
+            opacity: 0;
+            transform: translateY(60px) rotate(var(--tilt));
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            will-change: transform, opacity;
+        }
+        .photo-card.visible {
+            opacity: 1;
+            transform: translateY(0) rotate(var(--tilt));
+        }
+        .photo-card img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            border: 1px solid #ddd;
+        }
+        
+        /* Floating Indicator */
+        .scroll-hint {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.6);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            animation: bounce 2s infinite;
+            pointer-events: none;
+            z-index: 500;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
+            40% { transform: translate(-50%, -10px); }
+            60% { transform: translate(-50%, -5px); }
+        }
+
+        /* Decorative Side Emojis */
+        .side-emoji {
+            position: absolute;
+            font-size: 2.5rem;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+        .side-emoji.visible {
+            opacity: 0.8;
+            transform: scale(1);
+        }
+
+        /* ================= SURAT ULANG TAHUN ================= */
+        .letter-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.8rem;
+            color: #ffdeeb;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(255, 77, 165, 0.5);
+        }
+        .letter-box {
+            max-width: 100%;
+            width: 100%;
+            line-height: 1.8;
+            padding: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            text-align: left;
+            min-height: 150px;
+            font-size: 1.05rem;
+            white-space: pre-line;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* ================= PARTICLES (SAKURA & CONFETTI) ================= */
+        .particle {
+            position: fixed;
+            top: -20px;
+            pointer-events: none;
+            z-index: 9999;
+            will-change: transform;
+            animation: fall linear forwards;
+        }
+        @keyframes fall {
+            to { transform: translateY(105vh) rotate(360deg); }
+        }
+
+        /* Responsive Fixes */
+        @media (max-width: 600px) {
+            .card { padding: 20px; min-height: 350px; }
+            .album-title { font-size: 2.2rem; }
+            .letter-title { font-size: 2.2rem; }
+        }
+    </style>
 </head>
 <body>
 
-<audio id="gameMusic" loop>
-<source src="game.mp3" type="audio/mpeg">
-</audio>
-
-<audio id="memoryMusic" loop>
-<source src="kenangan.mp3" type="audio/mpeg">
-</audio>
-
-<div class="loading-screen" id="loadingScreen">
-
-<div class="loader"></div>
-
-<h2>Menyiapkan Hadiah Untuk Bunda 🎁</h2>
-
-</div>
-
-<section class="hero">
-
-<div class="hero-content">
-
-<h1>
-HAPPY BIRTHDAY BUNDAA 🎊🎉🎂
-</h1>
-
-<p>
-Sebuah hadiah kecil yang dibuat khusus untuk Bunda ❤️
-</p>
-
-<button
-class="main-btn"
-onclick="openGift()">
-
-Buka Hadiah 🎁
-
-</button>
-
-</div>
-
-</section>
-
-<div class="modal" id="giftModal">
-
-<div class="card">
-
-<button
-class="close-btn"
-onclick="closeGift()">
-
-✕
-</button>
-
-<div
-class="game-view"
-id="gameView">
-
-<h2>🎈 Tangkap 5 Balon 🎈</h2>
-
-<p>
-Klik 5 balon untuk membuka hadiah
-</p>
-
-<div id="score">
-0 / 5
-</div>
-
-<div id="balloonArea"></div>
-
-</div>
-
-<div
-class="memory-loading"
-id="memoryLoading">
-
-<h2>
-📸 Membuka Album Kenangan...
-</h2>
-
-<div class="memory-loader"></div>
-
-</div>
-<div
-class="slide-view"
-id="slideView">
-
-<div class="photo-frame">
-
-<img
-id="slideImage"
-src="img1.jpg">
-
-</div>
-
-<div
-class="counter"
-id="counter">
-
-1 / 10
-
-</div>
-
-<div class="controls">
-
-<button
-class="nav-btn"
-id="prevBtn"
-onclick="prevSlide()">
-
-⬅️
-
-</button>
-
-<button
-class="nav-btn"
-id="nextBtn"
-onclick="nextSlide()">
-
-➡️
-
-</button>
-
-</div>
-
-</div>
-
-<div
-class="letter-view"
-id="letterView">
-
-<h2>
-💌 Untuk Bunda Tercinta
-</h2>
-
-<br>
-
-<div
-class="letter-box">
-
-<p id="typedText"></p>
-
-</div>
-
-</div>
-
-<div
-class="ending-view"
-id="endingView">
-
-<h2>
-❤️ Terima Kasih Bunda ❤️
-</h2>
-
-<br>
-
-<p>
-Semoga selalu sehat,
-bahagia,
-dan panjang umur 🌸
-</p>
-
-<button
-class="restart-btn"
-onclick="location.reload()">
-
-🔄 Lihat Lagi
-
-</button>
-
-</div>
-
-</div>
-</div>
-
-<script>
-const photos = [
-"img1.jpg","img2.jpg","img3.jpg","img4.jpg","img5.jpg",
-"img6.jpg","img7.jpg","img8.jpg","img9.jpg","img10.jpg"
-];
-
-let currentPhoto = 0;
-let score = 0;
-let balloonActive = false;
-
-const gameMusic = document.getElementById("gameMusic");
-const memoryMusic = document.getElementById("memoryMusic");
-
-/* ================= SAFE START AUDIO ================= */
-function safePlay(audio){
-  audio.volume = 1;
-  audio.play().catch(()=>{});
-}
-
-/* ================= INIT ================= */
-window.onload = () => {
-  setTimeout(() => {
-    document.getElementById("loadingScreen").style.display = "none";
-  }, 1500);
-};
-
-/* ================= OPEN MODAL ================= */
-function openGift(){
-  document.getElementById("giftModal").classList.add("show");
-
-  safePlay(gameMusic);
-
-  if(!balloonActive){
-    balloonActive = true;
-    spawnBalloon();
-  }
-}
-
-/* ================= CLOSE ================= */
-function closeGift(){
-  document.getElementById("giftModal").classList.remove("show");
-}
-
-/* ================= BALLOON (ANTI LAG VERSION) ================= */
-function spawnBalloon(){
-  const area = document.getElementById("balloonArea");
-
-  if(!area) return;
-
-  const balloon = document.createElement("div");
-  balloon.className = "balloon";
-  balloon.innerHTML = "🎈";
-
-  balloon.style.left = Math.random()*85 + "%";
-  balloon.style.top = Math.random()*75 + "%";
-
-  balloon.onclick = () => {
-    balloon.remove();
-    score++;
-
-    document.getElementById("score").innerText = score + " / 5";
-
-    if(score >= 5){
-      winGame();
-    } else {
-      setTimeout(spawnBalloon, 400);
-    }
-  };
-
-  area.appendChild(balloon);
-
-  /* AUTO CLEAN (anti spam memory) */
-  setTimeout(() => {
-    if(balloon.parentNode){
-      balloon.remove();
-    }
-  }, 6000);
-}
-
-/* ================= WIN ================= */
-function winGame(){
-  document.getElementById("gameView").style.display = "none";
-  document.getElementById("memoryLoading").style.display = "flex";
-
-  fadeMusic();
-
-  setTimeout(() => {
-    document.getElementById("memoryLoading").style.display = "none";
-    document.getElementById("slideView").style.display = "flex";
-    showPhoto();
-  }, 2500);
-}
-
-/* ================= MUSIC FADE (LIGHT VERSION) ================= */
-function fadeMusic(){
-  safePlay(memoryMusic);
-
-  let step = 0;
-
-  const interval = setInterval(() => {
-    step++;
-
-    gameMusic.volume = Math.max(0, 1 - step/8);
-    memoryMusic.volume = Math.min(1, step/8);
-
-    if(step >= 8){
-      clearInterval(interval);
-      gameMusic.pause();
-    }
-  }, 250);
-}
-
-/* ================= SLIDE ================= */
-function showPhoto(){
-  const img = document.getElementById("slideImage");
-
-  img.src = photos[currentPhoto];
-
-  document.getElementById("counter").innerText =
-  (currentPhoto+1) + " / " + photos.length;
-
-  document.getElementById("prevBtn").disabled = (currentPhoto === 0);
-
-  document.getElementById("nextBtn").innerText =
-  (currentPhoto === photos.length-1) ? "💌 Surat" : "➡️";
-}
-
-function nextSlide(){
-  if(currentPhoto < photos.length-1){
-    currentPhoto++;
-    showPhoto();
-  } else {
-    showLetter();
-  }
-}
-
-function prevSlide(){
-  if(currentPhoto > 0){
-    currentPhoto--;
-    showPhoto();
-  }
-}
-
-/* ================= LETTER ================= */
-function showLetter(){
-  document.getElementById("slideView").style.display = "none";
-  document.getElementById("letterView").style.display = "flex";
-
-  typeLetter();
-}
-
-/* ================= TYPE (LIGHT VERSION) ================= */
-function typeLetter(){
-  const text = `Selamat ulang tahun Bunda ❤️
-Terima kasih atas semuanya...
-Sehat selalu yaa 🌸`;
-
-  const target = document.getElementById("typedText");
-  target.innerHTML = "";
-
-  let i = 0;
-
-  const typing = setInterval(() => {
-    target.innerHTML += text[i];
-    i++;
-
-    if(i >= text.length){
-      clearInterval(typing);
-
-      setTimeout(() => {
-        document.getElementById("letterView").style.display = "none";
-        document.getElementById("endingView").style.display = "flex";
-      }, 1500);
-    }
-  }, 40);
-}
-
-/* ================= LIGHT CONFETTI ================= */
-function launchConfetti(){
-  for(let i=0;i<15;i++){
-    const c = document.createElement("div");
-    c.className = "confetti";
-    c.innerHTML = ["🎉","✨","💖"][Math.floor(Math.random()*3)];
-    c.style.left = Math.random()*100 + "vw";
-    c.style.animationDuration = (2 + Math.random()*2) + "s";
-
-    document.body.appendChild(c);
-
-    setTimeout(()=>c.remove(), 4000);
-  }
-}
-
-/* ================= LIGHT SAKURA ================= */
-function launchSakura(){
-  for(let i=0;i<10;i++){
-    setTimeout(() => {
-      const f = document.createElement("div");
-      f.className = "sakura";
-      f.innerHTML = "🌸";
-      f.style.left = Math.random()*100 + "vw";
-      f.style.animationDuration = (4 + Math.random()*2) + "s";
-
-      document.body.appendChild(f);
-
-      setTimeout(()=>f.remove(), 6000);
-    }, i*150);
-  }
-}
-
-/* ESC CLOSE */
-document.addEventListener("keydown",(e)=>{
-  if(e.key === "Escape"){
-    closeGift();
-  }
-});
+    <audio id="music1" loop preload="auto">
+        <source src="musik_awal.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="music2" loop preload="auto">
+        <source src="musik_kenangan.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loader"></div>
+        <h2>Menyiapkan Hadiah Untuk Bunda... 🎁</h2>
+    </div>
+
+    <section class="hero" id="heroSection">
+        <div class="hero-content">
+            <h1 class="animate-line line-1">🎂 HAPPY BIRTHDAY</h1>
+            <h1 class="animate-line line-2" style="color: #fff275;">BUNDAA ❤️</h1>
+            <p class="animate-line line-3" style="margin-top: 15px; opacity: 0.9;">Sebuah hadiah kecil yang dibuat khusus untuk Bunda ✨</p>
+            <button class="main-btn animate-line line-3" onclick="startToGame()">Buka Hadiah 🎁</button>
+        </div>
+    </section>
+
+    <div class="view-container hidden" id="gameView">
+        <div class="card">
+            <h2 style="font-size: 1.6rem; color: #fff275;">🎈 Tangkap 5 Balon 🎈</h2>
+            <p style="font-size: 0.95rem; opacity: 0.9; margin-top: 5px;">Klik/Ketuk 5 balon untuk membuka album kenangan</p>
+            <div id="score">0 / 5</div>
+            <div id="balloonArea"></div>
+        </div>
+    </div>
+
+    <div class="album-loading hidden" id="albumTransition">
+        <h2 style="font-family: 'Dancing Script', cursive; font-size: 3rem; color: #ffb6dd; margin-bottom: 15px;">🎉 Selamat Ulang Tahun! 🎉</h2>
+        <div class="loader" style="width: 50px; height: 50px; border-width: 5px;"></div>
+        <h3 style="margin-top: 15px; font-weight: 400; font-size: 1.1rem;">📸 Membuka Album Kenangan...</h3>
+    </div>
+
+    <div class="hidden" id="albumSection">
+        <div class="album-title">Album Kenangan Bunda ✨</div>
+        
+        <div class="gallery-container">
+            <div class="photo-card" style="--tilt: -4deg;"><img src="img1.jpg" alt="Kenangan 1"></div>
+            <div class="photo-card" style="--tilt: 5deg;"><img src="img2.jpg" alt="Kenangan 2"></div>
+            <div class="photo-card" style="--tilt: -3deg;"><img src="img3.jpg" alt="Kenangan 3"></div>
+            <div class="photo-card" style="--tilt: 6deg;"><img src="img4.jpg" alt="Kenangan 4"></div>
+            <div class="photo-card" style="--tilt: -5deg;"><img src="img5.jpg" alt="Kenangan 5"></div>
+            <div class="photo-card" style="--tilt: 3deg;"><img src="img6.jpg" alt="Kenangan 6"></div>
+            <div class="photo-card" style="--tilt: -6deg;"><img src="img7.jpg" alt="Kenangan 7"></div>
+            <div class="photo-card" style="--tilt: 4deg;"><img src="img8.jpg" alt="Kenangan 8"></div>
+            <div class="photo-card" style="--tilt: -4deg;"><img src="img9.jpg" alt="Kenangan 9"></div>
+            <div class="photo-card" style="--tilt: 5deg;"><img src="img10.jpg" alt="Kenangan 10"></div>
+            
+            <button class="main-btn" id="btnToLetter" style="display: none; margin-top: 20px;" onclick="goToLetter()">LANJUTKAN 👉</button>
+        </div>
+
+        <div class="scroll-hint" id="scrollHint">geser kebawah 👇</div>
+    </div>
+
+    <div class="view-container hidden" id="letterView">
+        <div class="card" style="box-shadow: 0 25px 60px rgba(0,0,0,0.4);">
+            <div class="letter-title">SELAMAT ULANG TAHUN ❤️</div>
+            <div class="letter-box">
+                <p id="typedText"></p>
+            </div>
+            
+            <div id="endingContent" class="hidden" style="margin-top: 25px; animation: fadeUp 1s ease forwards;">
+                <h2 style="color: #fff275; font-size: 1.4rem; margin-bottom: 10px;">❤️ Terima Kasih Bunda ❤️</h2>
+                <button class="main-btn" style="margin-top: 10px; padding: 10px 25px; font-size: 0.9rem;" onclick="location.reload()">🔄 Lihat Lagi</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const music1 = document.getElementById("music1");
+        const music2 = document.getElementById("music2");
+        let score = 0;
+        let rainInterval;
+
+        // 1. Durasi Loading Screen Sengaja Dibuat Lama (3.5 Detik) 🤭
+        window.onload = () => {
+            setTimeout(() => {
+                const loaderScreen = document.getElementById("loadingScreen");
+                loaderScreen.style.opacity = "0";
+                setTimeout(() => loaderScreen.remove(), 1000);
+            }, 3500);
+        };
+
+        // Mulai Musik Pertama saat Tombol Buka Hadiah Di-klik
+        function startToGame() {
+            music1.volume = 1;
+            music1.play().catch(() => {});
+            
+            document.getElementById("heroSection").classList.add("hidden");
+            document.getElementById("gameView").classList.remove("hidden");
+            spawnBalloon();
+        }
+
+        // 2. Game Tangkap Balon
+        function spawnBalloon() {
+            if (score >= 5) return;
+            
+            const area = document.getElementById("balloonArea");
+            const balloon = document.createElement("div");
+            balloon.className = "balloon";
+            balloon.innerHTML = "🎈";
+            
+            // Posisi Acak Aman
+            balloon.style.left = Math.random() * 85 + "%";
+            balloon.style.top = Math.random() * 65 + "%";
+            
+            balloon.onclick = () => {
+                balloon.remove();
+                score++;
+                document.getElementById("score").innerHTML = score + " / 5";
+                
+                if (score >= 5) {
+                    winGame();
+                } else {
+                    spawnBalloon();
+                }
+            };
+            area.appendChild(balloon);
+        }
+
+        // Transisi setelah menang Game
+        function winGame() {
+            document.getElementById("gameView").classList.add("hidden");
+            document.getElementById("albumTransition").classList.remove("hidden");
+            
+            // Pemicu Transisi Musik Fade (Mengecil -> Ganti Lagu -> Membesar)
+            fadeMusicTransition();
+
+            // Tampilkan Layar Transisi selama 4 detik
+            setTimeout(() => {
+                document.getElementById("albumTransition").classList.add("hidden");
+                startAlbumSection();
+            }, 4000);
+        }
+
+        // Fungsi Transisi Suara Lebih Halus (Smooth Crossfade)
+        function fadeMusicTransition() {
+            let step = 0;
+            music2.volume = 0;
+            music2.play().catch(() => {});
+
+            let fadeInterval = setInterval(() => {
+                step++;
+                music1.volume = Math.max(0, 1 - (step / 10));
+                music2.volume = Math.min(1, step / 10);
+                
+                if (step >= 10) {
+                    clearInterval(fadeInterval);
+                    music1.pause();
+                }
+            }, 300); // Total durasi transisi 3 detik
+        }
+
+        // 3. Masuk Sesi Album Kenangan
+        function startAlbumSection() {
+            document.body.style.overflowY = "auto"; // Aktifkan scroll body
+            document.getElementById("albumSection").classList.remove("hidden");
+            
+            // Memulai efek hujan sakura tipis-tipis 🌸
+            startParticleRain(["🌸"], 120, 20);
+
+            // Munculkan teks "geser kebawah" tepat 2 detik setelah gambar pertama tampil
+            setTimeout(() => {
+                const hint = document.getElementById("scrollHint");
+                if(hint) hint.style.opacity = "1";
+            }, 2000);
+
+            setupScrollAnimations();
+        }
+
+        // Pengaturan Animasi Scroll Menggunakan Intersection Observer (Smooth & No Lag)
+        function setupScrollAnimations() {
+            const cards = document.querySelectorAll('.photo-card');
+            
+            // Dekorasi Emoji Ulang Tahun di Samping Kosong (🎂🎉🎁🕯)
+            const emojis = ["🎂", "🎉", "🎁", "🕯", "✨", "💖"];
+            const galleryContainer = document.querySelector('.gallery-container');
+
+            cards.forEach((card, index) => {
+                // Spawn emoji di sebelah kiri/kanan card secara acak
+                const sideEmoji = document.createElement('div');
+                sideEmoji.className = 'side-emoji';
+                sideEmoji.innerHTML = emojis[index % emojis.length];
+                sideEmoji.style.top = (index * 420 + 200) + "px";
+                if (index % 2 === 0) {
+                    sideEmoji.style.left = "5%";
+                } else {
+                    sideEmoji.style.right = "5%";
+                }
+                document.getElementById("albumSection").appendChild(sideEmoji);
+
+                // Setup Observer
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            sideEmoji.classList.add('visible');
+                            
+                            // Menghilangkan petunjuk scroll jika sudah scroll jauh
+                            if(index > 0) {
+                                const hint = document.getElementById("scrollHint");
+                                if(hint) hint.style.opacity = "0";
+                            }
+
+                            // Jika mencapai foto terakhir (ke-10), munculkan tombol LANJUTKAN
+                            if (index === cards.length - 1) {
+                                document.getElementById("btnToLetter").style.display = "inline-block";
+                            }
+                        }
+                    });
+                }, { threshold: 0.15 });
+
+                observer.observe(card);
+            });
+        }
+
+        // 4. Masuk Sesi Surat Ulang Tahun
+        function goToLetter() {
+            clearInterval(rainInterval); // Reset hujan sakura tipis
+            document.getElementById("albumSection").classList.add("hidden");
+            document.body.style.overflow = "hidden"; // Kunci scroll kembali
+            
+            document.getElementById("letterView").classList.remove("hidden");
+            
+            // Hujan partikel lebih ramai untuk sesi Surat (Sakura + Konfeti) 🎉🌸
+            startParticleRain(["🌸", "🎉", "🎊", "✨", "💖"], 60, 45);
+            
+            // Mulai efek mengetik teks surat
+            typeLetter();
+        }
+
+        function typeLetter() {
+            // Silakan edit teks pesan di bawah ini sesuai keinginanmu
+            const pesanSurat = `Selamat ulang tahun, Bunda tercinta. 🎂\n\nTerima kasih atas segala cinta, kebaikan, dan kesabaran yang selalu Bunda berikan setiap hari tanpa lelah. Terima kasih sudah selalu menjaga, mendukung, dan mendoakanku dalam setiap langkah.\n\nTetap semangat ya, Nda! 🌸 Semoga di usia yang baru ini, Bunda selalu diberikan kesehatan yang prima, kebahagiaan yang melimpah, panjang umur, serta segala berkah dari-Nya.\n\nAku sayang banget sama Bunda. ❤️\n\n- Dari anakmu`;
+
+            const target = document.getElementById("typedText");
+            target.innerHTML = "";
+            let i = 0;
+
+            const typing = setInterval(() => {
+                target.innerHTML += pesanSurat.charAt(i);
+                i++;
+                
+                if (i >= pesanSurat.length) {
+                    clearInterval(typing);
+                    // Tampilkan ending ucapan terima kasih setelah ketikan selesai
+                    setTimeout(() => {
+                        document.getElementById("endingContent").classList.remove("hidden");
+                    }, 1000);
+                }
+            }, 45); // Kecepatan efek ketik halus
+        }
+
+        // Generator Efek Hujan Partikel (Sakura / Konfeti)
+        function startParticleRain(emojisArray, intervalTime, maxParticles) {
+            let activeParticles = 0;
+            rainInterval = setInterval(() => {
+                if (activeParticles >= maxParticles) return;
+
+                const particle = document.createElement("div");
+                particle.className = "particle";
+                particle.innerHTML = emojisArray[Math.floor(Math.random() * emojisArray.length)];
+                
+                particle.style.left = Math.random() * 100 + "vw";
+                particle.style.fontSize = (16 + Math.random() * 16) + "px";
+                
+                const duration = 4 + Math.random() * 3;
+                particle.style.animationDuration = duration + "s";
+                
+                document.body.appendChild(particle);
+                activeParticles++;
+
+                setTimeout(() => {
+                    particle.remove();
+                    activeParticles--;
+                }, duration * 1000);
+
+            }, intervalTime);
+        }
     </script>
-
 </body>
 </html>
