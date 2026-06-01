@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HAPPY BIRTHDAY BUNDAA 🎊🎉🎂</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:linear-gradient(-45deg,#ff9ad5,#d8a6ff,#ffb6e1,#c9a6ff);
+background-size:400% 400%;
+animation:bg 15s ease infinite;
+color:white;
+overflow-x:hidden;
+}
+
+@keyframes bg{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+.hero{
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:20px;
+}
+
+.hero h1{
+font-size:clamp(2rem,6vw,4rem);
+text-shadow:
+0 0 10px white,
+0 0 20px #ff8ad8,
+0 0 40px #d28fff;
+}
+
+.hero p{
+margin-top:15px;
+font-size:1.1rem;
+}
+
+.btn{
+margin-top:25px;
+padding:15px 35px;
+border:none;
+border-radius:50px;
+cursor:pointer;
+font-size:1rem;
+font-weight:bold;
+background:white;
+color:#ff5eb1;
+box-shadow:0 10px 20px rgba(0,0,0,.2);
+transition:.3s;
+}
+
+.btn:hover{
+transform:scale(1.05);
+}
+
+.hidden{
+display:none;
+}
+
+.section{
+padding:50px 20px;
+}
+
+.card{
+max-width:1100px;
+margin:auto;
+padding:25px;
+background:rgba(255,255,255,.15);
+backdrop-filter:blur(12px);
+border-radius:25px;
+box-shadow:0 10px 30px rgba(0,0,0,.2);
+}
+
+.section-title{
+text-align:center;
+margin-bottom:25px;
+}
+
+.gallery{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+}
+
+.gallery img{
+width:100%;
+height:280px;
+object-fit:cover;
+border-radius:20px;
+cursor:pointer;
+transition:.3s;
+box-shadow:0 8px 20px rgba(0,0,0,.25);
+}
+
+.gallery img:hover{
+transform:scale(1.05);
+}
+
+.lightbox{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.9);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:999;
+}
+
+.lightbox img{
+max-width:90%;
+max-height:90%;
+border-radius:20px;
+}
+
+.letter{
+display:none;
+text-align:center;
+line-height:2;
+font-size:1.05rem;
+margin-top:20px;
+}
+
+footer{
+text-align:center;
+padding:40px;
+}
+
+.sakura{
+position:fixed;
+top:-20px;
+pointer-events:none;
+z-index:9999;
+animation:fall linear forwards;
+}
+
+@keyframes fall{
+to{
+transform:translateY(110vh) rotate(360deg);
+}
+}
+
+.loading{
+position:fixed;
+inset:0;
+background:#c97cff;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+z-index:10000;
+}
+
+.loader{
+width:60px;
+height:60px;
+border:6px solid rgba(255,255,255,.3);
+border-top:6px solid white;
+border-radius:50%;
+animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+100%{
+transform:rotate(360deg);
+}
+}
+
+@media(max-width:768px){
+
+.gallery img{
+height:220px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="loading" id="loading">
+<div class="loader"></div>
+<h2 style="margin-top:20px;">
+Menyiapkan Hadiah 🎁
+</h2>
+</div>
+
+<audio id="music" loop>
+<source src="happybirthday.mp3" type="audio/mpeg">
+</audio>
+
+<section class="hero">
+
+<h1>HAPPY BIRTHDAY BUNDAA 🎊🎉🎂</h1>
+
+<p>
+Sebuah hadiah kecil yang dibuat khusus untuk Bunda ❤️
+</p>
+
+<button class="btn" onclick="openGift()">
+Buka Hadiah 🎁
+</button>
+
+</section>
+
+<div id="giftContent" class="hidden">
+
+<section class="section">
+
+<div class="card">
+
+<h2 class="section-title">
+📸 Kenangan Indah
+</h2>
+
+<div class="gallery">
+
+<img src="img1.jpg" onclick="openImage(this.src)">
+<img src="img2.jpg" onclick="openImage(this.src)">
+<img src="img3.jpg" onclick="openImage(this.src)">
+<img src="img4.jpg" onclick="openImage(this.src)">
+<img src="img5.jpg" onclick="openImage(this.src)">
+<img src="img6.jpg" onclick="openImage(this.src)">
+
+</div>
+
+</div>
+
+</section>
+
+<section class="section">
+
+<div class="card">
+
+<h2 class="section-title">
+💌 Untuk Bunda Tercinta
+</h2>
+
+<button class="btn" onclick="showLetter()">
+Baca Surat
+</button>
+
+<div class="letter" id="letter">
+
+<p>Selamat ulang tahun, Bunda. 🎂</p>
+
+<p>
+Terima kasih atas semua yang selalu Bunda berikan setiap hari.
+Terima kasih sudah selalu menjaga,
+mendukung, dan mendoakanku.
+</p>
+
+<p>
+Tetap semangat ya, nda. 🌸
+</p>
+
+<p>
+Semoga Bunda selalu diberikan kesehatan,
+kebahagiaan, dan umur yang penuh berkah.
+</p>
+
+<p>
+❤️ Dari anakmu
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<footer>
+Dibuat dengan ❤️ untuk Bunda Tercinta
+</footer>
+
+</div>
+
+<div class="lightbox" id="lightbox" onclick="closeImage()">
+<img id="lightboxImg">
+</div>
+
+<script>
+
+window.onload=()=>{
+
+setTimeout(()=>{
+
+document.getElementById("loading").style.display="none";
+
+},2000);
+
+};
+
+function openGift(){
+
+document.getElementById("giftContent")
+.classList.remove("hidden");
+
+document.getElementById("music")
+.play()
+.catch(()=>{});
+
+document.querySelector(".btn")
+.style.display="none";
+
+for(let i=0;i<25;i++){
+
+setTimeout(createFlower,i*150);
+
+}
+
+}
+
+function createFlower(){
+
+let flower=document.createElement("div");
+
+flower.className="sakura";
+
+flower.innerHTML="🌸";
+
+flower.style.left=Math.random()*100+"vw";
+
+flower.style.fontSize=
+(15+Math.random()*15)+"px";
+
+flower.style.animationDuration=
+(5+Math.random()*4)+"s";
+
+document.body.appendChild(flower);
+
+setTimeout(()=>{
+
+flower.remove();
+
+},9000);
+
+}
+
+function showLetter(){
+
+document.getElementById("letter")
+.style.display="block";
+
+confetti();
+
+}
+
+function confetti(){
+
+for(let i=0;i<30;i++){
+
+let c=document.createElement("div");
+
+c.innerHTML="🎉";
+
+c.style.position="fixed";
+c.style.left=Math.random()*100+"vw";
+c.style.top="-20px";
+c.style.fontSize="24px";
+c.style.zIndex="9999";
+
+document.body.appendChild(c);
+
+c.animate(
+[
+{transform:"translateY(0)"},
+{transform:"translateY(100vh)"}
+],
+{
+duration:2500+Math.random()*1500
+}
+);
+
+setTimeout(()=>{
+
+c.remove();
+
+},5000);
+
+}
+
+}
+
+function openImage(src){
+
+document.getElementById("lightbox")
+.style.display="flex";
+
+document.getElementById("lightboxImg")
+.src=src;
+
+}
+
+function closeImage(){
+
+document.getElementById("lightbox")
+.style.display="none";
+
+}
+
+</script>
+
+</body>
+</html>
