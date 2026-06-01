@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>HAPPY BIRTHDAY BUNDAA 🎂</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+html,body{
+width:100%;
+height:100%;
+overflow:hidden;
+}
+
+body{
+background:linear-gradient(-45deg,#ff9ad5,#d6a2ff,#ffb6dd,#b99dff);
+background-size:400% 400%;
+animation:bgMove 15s ease infinite;
+color:white;
+}
+
+@keyframes bgMove{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+/* ================= LOADING ================= */
+
+.loading-screen{
+position:fixed;
+inset:0;
+background:linear-gradient(135deg,#ff89d6,#b87fff);
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+z-index:99999;
+}
+
+.loader{
+width:70px;
+height:70px;
+border:7px solid rgba(255,255,255,.3);
+border-top:7px solid white;
+border-radius:50%;
+animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+100%{
+transform:rotate(360deg);
+}
+}
+
+.loading-screen h2{
+margin-top:20px;
+font-size:1.2rem;
+}
+
+/* ================= HERO ================= */
+
+.hero{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+text-align:center;
+}
+
+.hero-content{
+max-width:800px;
+}
+
+.hero h1{
+font-size:clamp(2rem,6vw,4.5rem);
+line-height:1.2;
+
+text-shadow:
+0 0 15px rgba(255,255,255,.9),
+0 0 30px rgba(255,255,255,.5);
+
+animation:fadeUp 1s ease;
+}
+
+.hero p{
+margin-top:20px;
+font-size:1.1rem;
+opacity:.95;
+}
+
+@keyframes fadeUp{
+from{
+opacity:0;
+transform:translateY(30px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+.main-btn{
+margin-top:30px;
+padding:15px 35px;
+border:none;
+border-radius:999px;
+cursor:pointer;
+
+font-size:1rem;
+font-weight:700;
+
+background:white;
+color:#ff4da5;
+
+box-shadow:
+0 10px 25px rgba(0,0,0,.2);
+
+transition:.3s;
+}
+
+.main-btn:hover{
+transform:scale(1.05);
+}
+
+/* ================= MODAL ================= */
+
+.modal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.55);
+
+display:none;
+justify-content:center;
+align-items:center;
+
+padding:20px;
+
+backdrop-filter:blur(8px);
+
+z-index:9999;
+}
+
+.modal.show{
+display:flex;
+}
+
+.card{
+width:min(92vw,760px);
+
+min-height:500px;
+
+background:rgba(255,255,255,.15);
+
+backdrop-filter:blur(15px);
+
+border-radius:30px;
+
+padding:25px;
+
+box-shadow:
+0 15px 40px rgba(0,0,0,.25);
+
+position:relative;
+
+overflow:hidden;
+}
+
+/* ================= CLOSE BUTTON ================= */
+
+.close-btn{
+position:absolute;
+right:15px;
+top:15px;
+
+width:45px;
+height:45px;
+
+border:none;
+border-radius:50%;
+
+cursor:pointer;
+
+background:rgba(255,255,255,.2);
+
+color:white;
+font-size:1.2rem;
+}
+
+/* ================= GAME ================= */
+
+.game-view{
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+
+height:100%;
+}
+
+.game-view h2{
+margin-bottom:10px;
+}
+
+#score{
+font-size:2rem;
+font-weight:bold;
+margin-bottom:20px;
+}
+
+#balloonArea{
+position:relative;
+
+width:100%;
+height:280px;
+
+overflow:hidden;
+}
+
+/* ================= BALLOON ================= */
+
+.balloon{
+position:absolute;
+
+font-size:55px;
+
+cursor:pointer;
+
+user-select:none;
+
+transition:.2s;
+}
+
+.balloon:hover{
+transform:scale(1.1);
+}
+
+/* ================= LOADING KENANGAN ================= */
+
+.memory-loading{
+display:none;
+
+height:100%;
+
+justify-content:center;
+align-items:center;
+flex-direction:column;
+
+text-align:center;
+}
+
+.memory-loading h2{
+margin-bottom:15px;
+}
+
+.memory-loader{
+width:60px;
+height:60px;
+
+border:6px solid rgba(255,255,255,.25);
+border-top:6px solid white;
+
+border-radius:50%;
+
+animation:spin 1s linear infinite;
+}
+
+/* ================= SLIDESHOW ================= */
+
+.slide-view{
+display:none;
+
+height:100%;
+
+flex-direction:column;
+justify-content:center;
+align-items:center;
+
+text-align:center;
+}
+
+.photo-frame{
+width:min(100%,520px);
+
+aspect-ratio:4/3;
+
+border-radius:25px;
+
+overflow:hidden;
+
+box-shadow:
+0 10px 30px rgba(0,0,0,.25);
+}
+
+.photo-frame img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.counter{
+margin-top:15px;
+font-weight:600;
+}
+
+.controls{
+margin-top:20px;
+
+display:flex;
+gap:10px;
+}
+
+.nav-btn{
+padding:12px 20px;
+
+border:none;
+border-radius:999px;
+
+cursor:pointer;
+
+font-weight:bold;
+
+background:white;
+color:#d54fa5;
+}
+
+/* ================= LETTER ================= */
+
+.letter-view{
+display:none;
+
+height:100%;
+
+justify-content:center;
+align-items:center;
+flex-direction:column;
+
+text-align:center;
+}
+
+.letter-box{
+
+max-width:600px;
+
+line-height:2;
+
+padding:25px;
+
+background:rgba(255,255,255,.1);
+
+border-radius:25px;
+}
+
+/* ================= ENDING ================= */
+
+.ending-view{
+display:none;
+
+height:100%;
+
+justify-content:center;
+align-items:center;
+flex-direction:column;
+
+text-align:center;
+}
+
+.restart-btn{
+margin-top:20px;
+
+padding:14px 30px;
+
+border:none;
+border-radius:999px;
+
+cursor:pointer;
+
+font-weight:bold;
+
+background:white;
+color:#ff4da5;
+}
+
+/* ================= SAKURA ================= */
+
+.sakura{
+position:fixed;
+top:-20px;
+
+pointer-events:none;
+
+z-index:99999;
+
+animation:fall linear forwards;
+}
+
+@keyframes fall{
+to{
+transform:translateY(110vh) rotate(360deg);
+}
+}
+
+/* ================= CONFETTI ================= */
+
+.confetti{
+position:fixed;
+top:-20px;
+
+pointer-events:none;
+
+z-index:99999;
+
+animation:fall linear forwards;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:768px){
+
+.card{
+min-height:450px;
+}
+
+.photo-frame{
+aspect-ratio:1/1;
+}
+
+.hero p{
+font-size:1rem;
+}
+
+}
+
+</style>
+</head>
+<body>
+
+<audio id="gameMusic" loop>
+<source src="game.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="memoryMusic" loop>
+<source src="kenangan.mp3" type="audio/mpeg">
+</audio>
+
+<div class="loading-screen" id="loadingScreen">
+
+<div class="loader"></div>
+
+<h2>Menyiapkan Hadiah Untuk Bunda 🎁</h2>
+
+</div>
+
+<section class="hero">
+
+<div class="hero-content">
+
+<h1>
+HAPPY BIRTHDAY BUNDAA 🎊🎉🎂
+</h1>
+
+<p>
+Sebuah hadiah kecil yang dibuat khusus untuk Bunda ❤️
+</p>
+
+<button
+class="main-btn"
+onclick="openGift()">
+
+Buka Hadiah 🎁
+
+</button>
+
+</div>
+
+</section>
+
+<div class="modal" id="giftModal">
+
+<div class="card">
+
+<button
+class="close-btn"
+onclick="closeGift()">
+
+✕
+</button>
+
+<div
+class="game-view"
+id="gameView">
+
+<h2>🎈 Tangkap 5 Balon 🎈</h2>
+
+<p>
+Klik 5 balon untuk membuka hadiah
+</p>
+
+<div id="score">
+0 / 5
+</div>
+
+<div id="balloonArea"></div>
+
+</div>
+
+<div
+class="memory-loading"
+id="memoryLoading">
+
+<h2>
+📸 Membuka Album Kenangan...
+</h2>
+
+<div class="memory-loader"></div>
+
+</div>
+<div
+class="slide-view"
+id="slideView">
+
+<div class="photo-frame">
+
+<img
+id="slideImage"
+src="img1.jpg">
+
+</div>
+
+<div
+class="counter"
+id="counter">
+
+1 / 10
+
+</div>
+
+<div class="controls">
+
+<button
+class="nav-btn"
+id="prevBtn"
+onclick="prevSlide()">
+
+⬅️
+
+</button>
+
+<button
+class="nav-btn"
+id="nextBtn"
+onclick="nextSlide()">
+
+➡️
+
+</button>
+
+</div>
+
+</div>
+
+<div
+class="letter-view"
+id="letterView">
+
+<h2>
+💌 Untuk Bunda Tercinta
+</h2>
+
+<br>
+
+<div
+class="letter-box">
+
+<p id="typedText"></p>
+
+</div>
+
+</div>
+
+<div
+class="ending-view"
+id="endingView">
+
+<h2>
+❤️ Terima Kasih Bunda ❤️
+</h2>
+
+<br>
+
+<p>
+Semoga selalu sehat,
+bahagia,
+dan panjang umur 🌸
+</p>
+
+<button
+class="restart-btn"
+onclick="location.reload()">
+
+🔄 Lihat Lagi
+
+</button>
+
+</div>
+
+</div>
+</div>
+
+<script>
+
+const photos = [
+
+"img1.jpg",
+"img2.jpg",
+"img3.jpg",
+"img4.jpg",
+"img5.jpg",
+"img6.jpg",
+"img7.jpg",
+"img8.jpg",
+"img9.jpg",
+"img10.jpg"
+
+];
+
+let currentPhoto = 0;
+let score = 0;
+
+const gameMusic =
+document.getElementById("gameMusic");
+
+const memoryMusic =
+document.getElementById("memoryMusic");
+
+window.onload = ()=>{
+
+setTimeout(()=>{
+
+document.getElementById(
+"loadingScreen"
+).style.display="none";
+
+},2000);
+
+gameMusic.volume=1;
+
+gameMusic.play()
+.catch(()=>{});
+
+};
+
+function openGift(){
+
+document
+.getElementById("giftModal")
+.classList.add("show");
+
+spawnBalloon();
+
+}
+
+function closeGift(){
+
+document
+.getElementById("giftModal")
+.classList.remove("show");
+
+}
+
+function spawnBalloon(){
+
+const area =
+document.getElementById(
+"balloonArea"
+);
+
+const balloon =
+document.createElement("div");
+
+balloon.className =
+"balloon";
+
+balloon.innerHTML =
+"🎈";
+
+balloon.style.left =
+Math.random()*80+"%";
+
+balloon.style.top =
+Math.random()*70+"%";
+
+balloon.onclick = ()=>{
+
+balloon.remove();
+
+score++;
+
+document.getElementById(
+"score"
+).innerHTML =
+score + " / 5";
+
+if(score >= 5){
+
+winGame();
+
+}else{
+
+spawnBalloon();
+
+}
+
+};
+
+area.appendChild(balloon);
+
+}
+
+function winGame(){
+
+document
+.getElementById(
+"gameView"
+).style.display =
+"none";
+
+document
+.getElementById(
+"memoryLoading"
+).style.display =
+"flex";
+
+fadeMusic();
+
+setTimeout(()=>{
+
+document
+.getElementById(
+"memoryLoading"
+).style.display =
+"none";
+
+document
+.getElementById(
+"slideView"
+).style.display =
+"flex";
+
+showPhoto();
+
+},4000);
+
+}
+
+function fadeMusic(){
+
+memoryMusic.volume=0;
+
+memoryMusic.play()
+.catch(()=>{});
+
+let step=0;
+
+let fadeInterval =
+setInterval(()=>{
+
+step++;
+
+gameMusic.volume =
+Math.max(
+0,
+1-step/10
+);
+
+memoryMusic.volume =
+Math.min(
+1,
+step/10
+);
+
+if(step>=10){
+
+clearInterval(
+fadeInterval
+);
+
+gameMusic.pause();
+
+}
+
+},300);
+
+}
+
+function showPhoto(){
+
+document
+.getElementById(
+"slideImage"
+).src =
+photos[currentPhoto];
+
+document
+.getElementById(
+"counter"
+).innerHTML =
+(currentPhoto+1)
++
+" / "
++
+photos.length;
+
+document
+.getElementById(
+"prevBtn"
+).disabled =
+(currentPhoto===0);
+
+if(
+currentPhoto
+===
+photos.length-1
+){
+
+document
+.getElementById(
+"nextBtn"
+).innerHTML =
+"💌 Buka Surat";
+
+}else{
+
+document
+.getElementById(
+"nextBtn"
+).innerHTML =
+"➡️";
+
+}
+
+}
+function nextSlide(){
+
+if(
+currentPhoto <
+photos.length-1
+){
+
+currentPhoto++;
+
+showPhoto();
+
+}else{
+
+showLetter();
+
+}
+
+}
+
+function prevSlide(){
+
+if(currentPhoto>0){
+
+currentPhoto--;
+
+showPhoto();
+
+}
+
+}
+
+function showLetter(){
+
+document
+.getElementById(
+"slideView"
+).style.display =
+"none";
+
+document
+.getElementById(
+"letterView"
+).style.display =
+"flex";
+
+launchConfetti();
+
+launchSakura();
+
+typeLetter();
+
+}
+
+function typeLetter(){
+
+const text =
+
+`Selamat ulang tahun, Bunda. 🎂
+
+Terima kasih atas semua yang selalu Bunda berikan setiap hari.
+
+Terima kasih sudah selalu menjaga, mendukung, dan mendoakanku.
+
+Tetap semangat ya nda. 🌸
+
+Semoga Bunda selalu diberikan kesehatan, kebahagiaan, dan umur yang penuh berkah.
+
+❤️ Dari anakmu`;
+
+const target =
+document.getElementById(
+"typedText"
+);
+
+target.innerHTML="";
+
+let i=0;
+
+const typing =
+setInterval(()=>{
+
+target.innerHTML +=
+text.charAt(i);
+
+i++;
+
+if(i>=text.length){
+
+clearInterval(
+typing
+);
+
+setTimeout(()=>{
+
+document
+.getElementById(
+"letterView"
+).style.display =
+"none";
+
+document
+.getElementById(
+"endingView"
+).style.display =
+"flex";
+
+},4000);
+
+}
+
+},35);
+
+}
+
+function launchConfetti(){
+
+for(
+let i=0;
+i<40;
+i++
+){
+
+const confetti =
+document.createElement(
+"div"
+);
+
+confetti.className =
+"confetti";
+
+const emojis =
+
+[
+"🎉",
+"🎊",
+"✨",
+"💖"
+];
+
+confetti.innerHTML =
+
+emojis[
+Math.floor(
+Math.random()
+*
+emojis.length
+)
+];
+
+confetti.style.left =
+Math.random()*100
++
+"vw";
+
+confetti.style.fontSize =
+(
+18+
+Math.random()*12
+)
++
+"px";
+
+confetti.style.animationDuration =
+(
+3+
+Math.random()*2
+)
++
+"s";
+
+document.body.appendChild(
+confetti
+);
+
+setTimeout(()=>{
+
+confetti.remove();
+
+},5000);
+
+}
+
+}
+
+function launchSakura(){
+
+for(
+let i=0;
+i<30;
+i++
+){
+
+setTimeout(()=>{
+
+const flower =
+document.createElement(
+"div"
+);
+
+flower.className =
+"sakura";
+
+flower.innerHTML =
+"🌸";
+
+flower.style.left =
+Math.random()*100
++
+"vw";
+
+flower.style.fontSize =
+(
+15+
+Math.random()*18
+)
++
+"px";
+
+flower.style.animationDuration =
+(
+5+
+Math.random()*4
+)
++
+"s";
+
+document.body.appendChild(
+flower
+);
+
+setTimeout(()=>{
+
+flower.remove();
+
+},9000);
+
+},i*120);
+
+}
+
+}
+
+/* ESC untuk tutup modal */
+
+document.addEventListener(
+"keydown",
+(e)=>{
+
+if(
+e.key==="Escape"
+){
+
+closeGift();
+
+}
+
+}
+);
+
+</script>
+
+</body>
+</html>
